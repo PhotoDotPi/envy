@@ -1,0 +1,82 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  # Primary toolchain: Bun. Runs the full check suite including the packed
+  # artifact gate (verify:package) and the enforced coverage gate.
+  bun:
+    name: Bun (latest)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - run: bun install --frozen-lockfile
+      - run: bun run typecheck
+      - run: bun run lint
+      - run: bun run format:check
+      - run: bun run test
+      - run: bun run test:types
+      - run: bun run test:coverage
+      - run: bun run build
+      - run: bun run verify:package
+      - run: bunx publint
+      # Examples smoke (P2-07): examples are typechecked by `tsc` and executed
+      # here so they cannot silently rot.
+      - run: bun run examples/basic.ts
+      - run: NODE_ENV=production REGION=eu-west-1 bun run examples/enum.ts
+      - run: bun run examples/env-file.ts
+      - run: PORT=99999 bun run examples/validation.ts
+      - run: PORT=3001 HOST=127.0.0.1 NODE_ENV=test DATABASE_URL=https://example.com bun run examples/server.ts
+
+  # Node.js runtime matrix (18 = engines floor, plus 20/22/24). Uses the
+  # committed package-lock.json for reproducible installs via `npm ci`.
+  node:
+    name: Node.js ${{ matrix.node-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [18, 20, 22, 24]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run format:check
+      - run: npm test
+      - run: npm run test:types
+      - run: npm run build
+      - run: npm run verify:package
+      - run: npx publint
+
+  # Deno runtime claim: import the built ESM core from a file URL and exercise
+  # parsing, result errors, the core error classes, fromObject and fromDenoEnv.
+  # The Node-only /load loader is intentionally not part of the Deno smoke.
+  deno:
+    name: Deno (latest)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - run: bun install --frozen-lockfile
+      - run: bun run build
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - run: deno run --allow-env scripts/verify-deno.ts
+
+  # The browser/core boundary is guarded by a vitest test (tests/browser.test.ts)
+  # inside the `test` step of the bun and node jobs: esbuild bundles a pure
+  # parser consumer for --platform=browser and asserts no fs/path/readFileSync
+  # leaks into the core bundle.

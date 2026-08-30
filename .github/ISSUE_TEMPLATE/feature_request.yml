@@ -1,0 +1,54 @@
+name: Feature request
+description: Propose a new capability or improvement for envy-ts
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the idea. `envy-ts` is **deliberately small** — before building,
+        please make the case for why this belongs in the core rather than outside
+        it. Before submitting, skim [Real, honest limits](../README.md#real-honest-limits)
+        to avoid proposing something already ruled out by design.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: "Describe the real-world scenario. Who hits it, and how often?"
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+      description: "What should `envy-ts` do? Concrete API shape or expected usage is ideal."
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives
+      description: "Is there a way to achieve this today (schema composition, adapters, a wrapping library)?"
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Scope
+      description: "Where would this live, if it were built?"
+      options:
+        - Core (a new field maker / parse behavior)
+        - Loader (`envy-ts/load`)
+        - Adapters / sources
+        - Types / declarations
+        - Documentation
+    validations:
+      required: true
+  - type: checkboxes
+    id: considerations
+    attributes:
+      label: Design considerations
+      description: "Help reviewers evaluate fit with the project's contract."
+      options:
+        - label: "This does not add runtime dependencies"
+        - label: "This does not add hidden I/O or dynamic evaluation"
+        - label: "This keeps the core browser-safe (no Node builtins)"
+        - label: "This stays within the 'small, auditable layer' philosophy"

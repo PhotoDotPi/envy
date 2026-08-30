@@ -1,0 +1,97 @@
+name: Bug report
+description: Report a reproducible defect in envy-ts
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. Please fill in the environment matrix below — module-system and
+        TypeScript resolution details are essential for packaging/type bugs.
+  - type: input
+    id: version
+    attributes:
+      label: Package version
+      description: "e.g. 1.0.0"
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options:
+        - macOS
+        - Linux
+        - Windows
+        - Other / CI
+    validations:
+      required: true
+  - type: dropdown
+    id: runtime
+    attributes:
+      label: Runtime
+      options:
+        - Node.js
+        - Bun
+        - Deno
+        - Browser / bundler (Vite, esbuild, Rollup, Webpack)
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: runtime-version
+    attributes:
+      label: Runtime version
+      description: "e.g. Node 22.12.0, Bun 1.4.0, Deno 2.9.6"
+  - type: dropdown
+    id: module-system
+    attributes:
+      label: Module system
+      options:
+        - ESM
+        - CommonJS (CJS)
+        - Both / mixed
+    validations:
+      required: true
+  - type: input
+    id: ts-version
+    attributes:
+      label: TypeScript version
+      description: "e.g. 5.7.3"
+  - type: input
+    id: module
+    attributes:
+      label: module (tsconfig)
+      description: "e.g. ESNext, node16, nodenext, commonjs, bundler"
+  - type: input
+    id: module-resolution
+    attributes:
+      label: moduleResolution (tsconfig)
+      description: "e.g. bundler, node16, nodenext, node10"
+  - type: textarea
+    id: tsconfig
+    attributes:
+      label: tsconfig.json (relevant part)
+      description: "Paste the compilerOptions that reproduce the problem."
+      render: json
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: "Minimal code and steps to reproduce. Include the schema and source object."
+      render: typescript
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: "Include full error text. Redact any real secret values."
+    validations:
+      required: true

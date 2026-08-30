@@ -1,0 +1,88 @@
+{
+  "name": "envy-ts",
+  "version": "1.0.0",
+  "description": "Tiny, zero-dependency, type-safe environment variable parsing for Node.js, Bun and Deno.",
+  "keywords": [
+    "env",
+    "environment",
+    "environment-variables",
+    "config",
+    "configuration",
+    "dotenv",
+    "typescript",
+    "type-safe",
+    "node",
+    "bun",
+    "deno"
+  ],
+  "license": "MIT",
+  "author": "envy-ts contributors",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./load": {
+      "import": {
+        "types": "./dist/load.d.ts",
+        "default": "./dist/load.js"
+      },
+      "require": {
+        "types": "./dist/load.d.cts",
+        "default": "./dist/load.cjs"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "typesVersions": {
+    "*": {
+      "load": [
+        "./dist/load.d.ts"
+      ]
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check .",
+    "format": "biome format --write .",
+    "format:check": "biome format .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:types": "node scripts/type-tests.mjs",
+    "test:coverage": "vitest run --coverage",
+    "verify:package": "node --no-deprecation scripts/verify-package.mjs",
+    "verify:deno": "deno run --allow-env scripts/verify-deno.ts",
+    "check:package": "bun run build && bun run verify:package && bunx publint",
+    "check": "bun run typecheck && bun run lint && bun run format:check && bun run test && bun run test:types && bun run build && bun run check:package",
+    "prepublishOnly": "bun run build"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.11",
+    "@types/node": "^26.4.0",
+    "publint": "^0.3.24",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.11"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

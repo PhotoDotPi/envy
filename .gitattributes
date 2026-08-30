@@ -1,0 +1,18 @@
+# Normalize line endings to LF so Biome format/lint gates are identical on
+# every platform (regardless of core.autocrlf).
+* text=auto
+*.ts text eol=lf
+*.tsx text eol=lf
+*.mts text eol=lf
+*.cts text eol=lf
+*.js text eol=lf
+*.mjs text eol=lf
+*.cjs text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.jpg text binary
+*.png text binary
+*.tgz binary
+*.lock text eol=lf
