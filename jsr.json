@@ -1,0 +1,48 @@
+{
+  "name": "@photodotpi/envy-ts",
+  "version": "1.0.0",
+  "exports": {
+    ".": "./src/index.ts",
+    "./load": "./src/load.ts"
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+    "coverage",
+    "tests",
+    "examples",
+    "scripts",
+    "type-tests",
+    "*.test.ts",
+    "*.md",
+    ".github",
+    ".gitignore",
+    ".gitattributes",
+    "bun.lock",
+    "biome.json",
+    "tsconfig.json",
+    "tsup.config.ts",
+    "vitest.config.ts"
+  ],
+  "publish": {
+    "include": ["src", "LICENSE", "README.md"]
+  },
+  "license": "MIT",
+  "authors": ["envy-ts contributors"],
+  "description": "Tiny, zero-dependency, type-safe environment variable parsing for Node.js, Bun and Deno.",
+  "keywords": [
+    "env",
+    "environment",
+    "environment-variables",
+    "config",
+    "configuration",
+    "dotenv",
+    "typescript",
+    "type-safe",
+    "node",
+    "bun",
+    "deno"
+  ],
+  "repository": "https://github.com/PhotoDotPi/envy",
+  "homepage": "https://github.com/PhotoDotPi/envy#readme"
+}

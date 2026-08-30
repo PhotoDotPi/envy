@@ -4,6 +4,7 @@ import type { UrlOptions } from "../core/types";
 import { runCustom } from "../validation/validation";
 import { makeField } from "./helpers";
 
+/** Parse a valid URL value into a `URL` object. */
 export function url(name: string): Field<URL>;
 export function url(name: string, defaultValue: URL | string): Field<URL>;
 export function url(name: string, defaultValue: undefined): Field<URL, URL | undefined>;

@@ -99,10 +99,12 @@ export function safeReceived(name: string, raw: string, secret?: boolean): strin
   return value === undefined ? undefined : `"${value}"`;
 }
 
+/** Public contract for all errors emitted by the library. */
 export interface EnvErrorCodeHolder {
   readonly code: EnvErrorCode;
 }
 
+/** Additional metadata attached to an error instance. */
 export interface EnvErrorOptions {
   readonly variable?: string;
   readonly cause?: unknown;

@@ -1,7 +1,21 @@
+/**
+ * Load a `.env` file into the ambient environment.
+ *
+ * This subpath is intended for Node.js-style apps that want to populate
+ * `process.env` from a local `.env` file before booting the schema.
+ *
+ * @module load
+ * @example
+ * import { loadEnv } from "envy-ts/load";
+ *
+ * loadEnv();
+ * loadEnv({ path: ".env.local", override: true, required: true });
+ */
 import { readFileSync } from "node:fs";
 import { isAbsolute, join, resolve } from "node:path";
 import { EnvError } from "./core/errors";
 
+/** Configuration for loading a `.env` file into the current process environment. */
 export interface LoadEnvOptions {
   /** Path to the file to load. Defaults to `./.env` relative to `process.cwd()`. */
   readonly path?: string;

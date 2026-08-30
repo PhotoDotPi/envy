@@ -22,6 +22,7 @@ export interface CommonOptions {
   readonly example?: string;
 }
 
+/** Options shared by the string parser and its validation rules. */
 export interface StringOptions extends CommonOptions {
   /** Default value used when the variable is missing or empty. */
   readonly default?: string;
@@ -39,6 +40,7 @@ export interface StringOptions extends CommonOptions {
   readonly custom?: CustomValidator<string>;
 }
 
+/** Options shared by the numeric parser and its validation rules. */
 export interface NumberOptions extends CommonOptions {
   /** Default value used when the variable is missing or empty. */
   readonly default?: number;
@@ -54,6 +56,7 @@ export interface NumberOptions extends CommonOptions {
   readonly custom?: CustomValidator<number>;
 }
 
+/** Options shared by the boolean parser and its validation rules. */
 export interface BooleanOptions extends CommonOptions {
   /** Default value used when the variable is missing or empty. */
   readonly default?: boolean;
@@ -63,6 +66,7 @@ export interface BooleanOptions extends CommonOptions {
   readonly custom?: CustomValidator<boolean>;
 }
 
+/** Options shared by the bigint parser and its validation rules. */
 export interface BigIntOptions extends CommonOptions {
   /** Default value used when the variable is missing or empty. */
   readonly default?: bigint;
@@ -76,6 +80,7 @@ export interface BigIntOptions extends CommonOptions {
   readonly custom?: CustomValidator<bigint>;
 }
 
+/** Options shared by the URL parser and its validation rules. */
 export interface UrlOptions extends CommonOptions {
   /** Default value used when the variable is missing or empty. */
   readonly default?: URL | string;
@@ -85,6 +90,7 @@ export interface UrlOptions extends CommonOptions {
   readonly custom?: CustomValidator<URL>;
 }
 
+/** Options shared by the enum parser and its validation rules. */
 export interface EnumOptions<T extends readonly string[] = readonly string[]>
   extends CommonOptions {
   /** Default value used when the variable is missing or empty. */
@@ -95,6 +101,7 @@ export interface EnumOptions<T extends readonly string[] = readonly string[]>
   readonly custom?: CustomValidator<T[number]>;
 }
 
+/** Options shared by the email parser and its validation rules. */
 export interface EmailOptions extends CommonOptions {
   /** Default value used when the variable is missing or empty. */
   readonly default?: string;
@@ -106,6 +113,7 @@ export interface EmailOptions extends CommonOptions {
   readonly custom?: CustomValidator<string>;
 }
 
+/** Options shared by the host parser and its validation rules. */
 export interface HostOptions extends CommonOptions {
   /** Default value used when the variable is missing or empty. */
   readonly default?: string;
@@ -117,6 +125,7 @@ export interface HostOptions extends CommonOptions {
   readonly custom?: CustomValidator<string>;
 }
 
+/** Options shared by the port parser and its validation rules. */
 export interface PortOptions extends CommonOptions {
   /** Default value used when the variable is missing or empty. */
   readonly default?: number;
@@ -126,6 +135,7 @@ export interface PortOptions extends CommonOptions {
   readonly custom?: CustomValidator<number>;
 }
 
+/** Options shared by the JSON parser and its validation rules. */
 export interface JsonOptions extends CommonOptions {
   /** When `true`, a missing variable yields `undefined` instead of throwing. */
   readonly optional?: boolean;

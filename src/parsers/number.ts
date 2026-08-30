@@ -4,6 +4,7 @@ import type { NumberOptions } from "../core/types";
 import { compose, runCustom } from "../validation/validation";
 import { makeField } from "./helpers";
 
+/** Parse a numeric environment variable into a finite JavaScript number. */
 export function number(name: string): Field<number>;
 export function number(name: string, defaultValue: number): Field<number>;
 export function number(name: string, defaultValue: undefined): Field<number, number | undefined>;

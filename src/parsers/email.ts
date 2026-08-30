@@ -4,6 +4,7 @@ import type { EmailOptions } from "../core/types";
 import { compose, runCustom } from "../validation/validation";
 import { makeField } from "./helpers";
 
+/** Parse an email address from an environment variable. */
 export function email(name: string): Field<string>;
 export function email(name: string, defaultValue: string): Field<string>;
 export function email(name: string, defaultValue: undefined): Field<string, string | undefined>;

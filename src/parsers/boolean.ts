@@ -4,6 +4,7 @@ import type { BooleanOptions } from "../core/types";
 import { runCustom } from "../validation/validation";
 import { makeField } from "./helpers";
 
+/** Parse a boolean-valued environment variable from common truthy/falsy strings. */
 export function boolean(name: string): Field<boolean>;
 export function boolean(name: string, defaultValue: boolean): Field<boolean>;
 export function boolean(name: string, defaultValue: undefined): Field<boolean, boolean | undefined>;

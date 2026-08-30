@@ -4,6 +4,7 @@ import type { PortOptions } from "../core/types";
 import { runCustom } from "../validation/validation";
 import { makeField } from "./helpers";
 
+/** Parse a TCP/HTTP port number in the range 0-65535. */
 export function port(name: string): Field<number>;
 export function port(name: string, defaultValue: number): Field<number>;
 export function port(name: string, defaultValue: undefined): Field<number, number | undefined>;

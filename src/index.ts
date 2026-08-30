@@ -8,8 +8,18 @@
  * source, or the `env.*` field makers together with `env.config` /
  * `env.result` for the ambient `process.env`. The Node-only `.env` loader is
  * available from the `envy-ts/load` subpath.
+ *
+ * @module envy-ts
+ * @example
+ * import { env } from "envy-ts";
+ *
+ * const config = env.config({
+ *   port: env.number("PORT", 3000),
+ *   nodeEnv: env.enum("NODE_ENV", ["development", "production"] as const),
+ * });
  */
 
+/** Parse a schema against the ambient process environment and throw on the first error. */
 export { envConfig, envResult } from "./config";
 export type { EnvErrorCode } from "./core/errors";
 export {
@@ -86,6 +96,7 @@ import { url } from "./parsers/url";
  * const result = parseEnv(schema, { PORT: "8080" })
  * ```
  */
+/** Convenience namespace for the library's field makers and environment helpers. */
 export const env = {
   string,
   number,
@@ -102,6 +113,8 @@ export const env = {
   optional,
 } as const;
 
+/** The inferred shape of the exported `env` namespace. */
 export type Env = typeof env;
 
+/** Default export: the same typed namespace as the named `env` export. */
 export default env;

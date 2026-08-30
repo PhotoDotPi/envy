@@ -4,6 +4,7 @@ import type { BigIntOptions } from "../core/types";
 import { compose, runCustom } from "../validation/validation";
 import { makeField } from "./helpers";
 
+/** Parse a bigint-valued environment variable. */
 export function bigint(name: string): Field<bigint>;
 export function bigint(name: string, defaultValue: bigint): Field<bigint>;
 export function bigint(name: string, defaultValue: undefined): Field<bigint, bigint | undefined>;

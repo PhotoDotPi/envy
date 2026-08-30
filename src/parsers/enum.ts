@@ -4,6 +4,7 @@ import type { EnumOptions } from "../core/types";
 import { runCustom } from "../validation/validation";
 import { makeField } from "./helpers";
 
+/** Parse a string from a fixed allow-list of enum values. */
 export function enumValue<const T extends readonly string[]>(
   name: string,
   values: T,

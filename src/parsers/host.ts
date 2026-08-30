@@ -4,6 +4,7 @@ import type { HostOptions } from "../core/types";
 import { runCustom } from "../validation/validation";
 import { makeField } from "./helpers";
 
+/** Parse a hostname, IPv4 literal, or bracketed IPv6 literal. */
 export function host(name: string): Field<string>;
 export function host(name: string, defaultValue: string): Field<string>;
 export function host(name: string, defaultValue: undefined): Field<string, string | undefined>;

@@ -4,6 +4,7 @@ import type { StringOptions } from "../core/types";
 import { compose, runCustom } from "../validation/validation";
 import { makeField } from "./helpers";
 
+/** Parse a string environment variable without additional coercion. */
 export function string(name: string): Field<string>;
 export function string(name: string, defaultValue: string): Field<string>;
 export function string(name: string, defaultValue: undefined): Field<string, string | undefined>;

@@ -4,6 +4,7 @@ import type { JsonOptions } from "../core/types";
 import { runCustom } from "../validation/validation";
 import { makeField } from "./helpers";
 
+/** Parse a JSON value from an environment variable. */
 export function json(name: string): Field<unknown>;
 export function json(
   name: string,
