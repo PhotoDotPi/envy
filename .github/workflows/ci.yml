@@ -37,6 +37,10 @@ jobs:
 
   # Node.js runtime matrix (18 = engines floor, plus 20/22/24). Uses the
   # committed package-lock.json for reproducible installs via `npm ci`.
+  # Vitest 4 (and its rolldown/vite dependency) requires Node >= 20.12
+  # ("styleText" in node:util), so the vitest-only steps are skipped on the
+  # Node 18 leg. Node 18 still verifies typecheck/lint/format/type tests/build/
+  # verify:package/publint; the full vitest suite runs in the `check` job.
   node:
     name: Node.js ${{ matrix.node-version }}
     runs-on: ubuntu-latest
@@ -44,6 +48,15 @@ jobs:
       fail-fast: false
       matrix:
         node-version: [18, 20, 22, 24]
+        include:
+          - node-version: 20
+            run-vitest: true
+          - node-version: 22
+            run-vitest: true
+          - node-version: 24
+            run-vitest: true
+          - node-version: 18
+            run-vitest: false
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -53,7 +66,9 @@ jobs:
       - run: npm run typecheck
       - run: npm run lint
       - run: npm run format:check
-      - run: npm test
+      - name: Unit tests (Vitest)
+        if: ${{ matrix.run-vitest }}
+        run: npm test
       - run: npm run test:types
       - run: npm run build
       - run: npm run verify:package
@@ -78,6 +93,6 @@ jobs:
       - run: deno run --allow-env scripts/verify-deno.ts
 
   # The browser/core boundary is guarded by a vitest test (tests/browser.test.ts)
-  # inside the `test` step of the check and node jobs: esbuild bundles a pure
-  # parser consumer for --platform=browser and asserts no fs/path/readFileSync
-  # leaks into the core bundle.
+  # run in the `test` step of the check and node (20/22/24) jobs: esbuild bundles
+  # a pure parser consumer for --platform=browser and asserts no fs/path/
+  # readFileSync leaks into the core bundle.
