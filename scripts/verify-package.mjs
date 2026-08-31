@@ -16,7 +16,7 @@
  * Run after `npm run build` via:  npm run verify:package
  */
 import { execFileSync, spawnSync } from "node:child_process";
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
@@ -452,6 +452,20 @@ if (build.status !== 0) {
 }
 
 const packOutput = run("npm", ["pack", "--json", "--silent"], root);
+/** Locate the npm pack summary object across every output shape npm emits:
+ *  - array form (npm 9/10)            -> [ { id, filename, files }, ... ]
+ *  - object keyed by package name      -> { "envy-ts": { id, filename, files } }
+ *  - flat object                       -> { id, filename, files }
+ *  Returns `undefined` if it cannot be found. */
+function findPackMeta(parsed) {
+  if (parsed === null || typeof parsed !== "object") return undefined;
+  if (Array.isArray(parsed))
+    return parsed.find((e) => e && typeof e === "object" && typeof e.filename === "string");
+  if (typeof parsed.filename === "string") return parsed;
+  return Object.values(parsed).find(
+    (e) => e && typeof e === "object" && typeof e.filename === "string",
+  );
+}
 let packMeta;
 try {
   const raw = packOutput.trim();
@@ -460,12 +474,18 @@ try {
   const end = raw.lastIndexOf("}");
   const jsonText = start >= 0 && end >= 0 ? raw.slice(start, end + 1) : raw;
   const parsed = JSON.parse(jsonText);
-  // npm 12 emits an object keyed by package name; older npm emits an array.
-  packMeta = Array.isArray(parsed) ? parsed[0] : Object.values(parsed)[0];
+  packMeta = findPackMeta(parsed);
 } catch {
   throw new Error(`could not parse npm pack --json output: ${packOutput.slice(0, 500)}`);
 }
-const { filename: tarballName, files } = packMeta;
+// Fallback: if JSON parsing did not surface the tarball name, glob for it.
+const tarballName = packMeta?.filename ?? readdirSync(root).find((f) => f.endsWith(".tgz"));
+if (!tarballName) {
+  throw new Error(
+    `could not determine packed tarball filename from npm pack output: ${packOutput.slice(0, 500)}`,
+  );
+}
+const files = packMeta?.files ?? [];
 const tarball = resolve(root, tarballName);
 
 let consumerDir;
