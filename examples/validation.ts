@@ -1,7 +1,7 @@
 /**
  * Validation: fail fast with a clear message instead of crashing later.
  *
- * Run with:  PORT=99999 bun run examples/validation.ts
+ * Run with:  PORT=99999 npx tsx examples/validation.ts
  */
 import { EnvError, env } from "../src";
 

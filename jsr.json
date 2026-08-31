@@ -18,7 +18,7 @@
     ".github",
     ".gitignore",
     ".gitattributes",
-    "bun.lock",
+    "package-lock.json",
     "biome.json",
     "tsconfig.json",
     "tsup.config.ts",

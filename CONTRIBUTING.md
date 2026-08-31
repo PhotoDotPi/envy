@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <code><b>bun run check</b></code>
+  <code><b>npm run check</b></code>
   &nbsp;·&nbsp; one command &nbsp;·&nbsp; the whole gate
 </p>
 
@@ -24,7 +24,7 @@ fix that saves someone an hour: these are the changes that compound.
 What you can expect in return:
 
 - **A fast, human review.** Changes are small and focused, so reviews are quick.
-- **A strict but fair gate.** `bun run check` is the whole bar — nothing hidden.
+- **A strict but fair gate.** `npm run check` is the whole bar — nothing hidden.
 - **Zero-dependency discipline.** Your contribution ships in a package that
   stays auditable and tiny.
 
@@ -34,8 +34,8 @@ What you can expect in return:
 flowchart LR
     A[Find or open an issue] --> B[Create a branch]
     B --> C[Make your change]
-    C --> D[Run bun run check]
-    D --> E{bun run check\npasses?}
+    C --> D[Run npm run check]
+    D --> E{npm run check\npasses?}
     E -- no --> C
     E -- yes --> F[Add a regression test\nif behavior changed]
     F --> G[Update CHANGELOG.md\nand docs]
@@ -54,27 +54,31 @@ flowchart LR
 
 | Tool | Version | Needed for |
 |---|---|---|
-| [Node.js](https://nodejs.org) | **≥ 18** | The package's engines floor |
-| [Bun](https://bun.sh) | ≥ 1.x | The primary toolchain; installs and the `check` suite; `prepublishOnly` |
-| [Deno](https://deno.com) | ≥ 2.x | Only the Deno smoke test (`bun run verify:deno`) |
+| [Node.js](https://nodejs.org) | **≥ 18** | The package's engines floor, and the primary toolchain; installs and the `check` suite; `prepublishOnly` |
+| [npm](https://www.npmjs.com) | ≥ 9 (ships with Node) | Package manager; installs and lockfile (`package-lock.json`) |
+| [Deno](https://deno.com) | ≥ 2.x | Only the Deno smoke test (`npm run verify:deno`) |
 
-Only install what you need. If you are not touching Deno or the loader, Bun
-alone is enough.
+Only install what you need. If you are not touching Deno or the loader, Node.js
+and npm alone are enough.
+
+The library supports **Bun and Deno as runtimes**, but it is **developed** with
+Node.js + npm.
 
 ---
 
 ## Set up
 
-Two lockfiles are maintained on purpose — one per supported toolchain track:
+One lockfile is maintained, produced by npm:
 
 ```bash
-bun install   # Bun track -> updates bun.lock
-npm install   # Node track -> updates package-lock.json
+npm install   # installs dependencies -> updates package-lock.json
 ```
 
-Both tracks are validated in CI. **When you change dependencies, update both
-lockfiles** and make sure both `bun install --frozen-lockfile` and `npm ci`
-succeed.
+For a clean, reproducible install in CI or after clone:
+
+```bash
+npm ci
+```
 
 The package has **zero runtime dependencies** — that is a hard contract. All
 development dependencies live in `devDependencies`; never rely on hoisted
@@ -87,26 +91,26 @@ transitive packages.
 One command does it all:
 
 ```bash
-bun run check    # typecheck + lint + format + test + test:types + build + verify:package + publint
+npm run check    # typecheck + lint + format + test + test:types + build + verify:package + publint
 ```
 
 Run the pieces individually while you work — they are fast:
 
 | Command | What it does |
 |---|---|
-| `bun run typecheck` | `tsc --noEmit` over `src`, `tests`, `examples` |
-| `bun run lint` | Biome check (lint + format + import organization) |
-| `bun run format` | Biome format in-place |
-| `bun run format:check` | Biome format check (CI-safe) |
-| `bun run test` | Vitest unit/security/adapter/browser suites |
-| `bun run test:types` | Positive (`valid`) + negative (`invalid`) compile-time suites |
-| `bun run test:coverage` | Vitest with enforced thresholds (lines ≥ 95, statements ≥ 95, branches ≥ 90, functions ≥ 95) |
-| `bun run build` | tsup → ESM + CJS + `.d.ts` + `.d.cts` + sourcemaps into `dist/` |
-| `bun run verify:package` | Packs the tarball, installs it into throwaway projects, runs runtime ESM/CJS smokes + the full TypeScript consumer matrix against the **packed artifact** |
-| `bun run verify:deno` | Deno smoke against the built `dist/index.js` |
-| `publint` / `npx publint` | Package-lint of exports/types (must report "All good!") |
+| `npm run typecheck` | `tsc --noEmit` over `src`, `tests`, `examples` |
+| `npm run lint` | Biome check (lint + format + import organization) |
+| `npm run format` | Biome format in-place |
+| `npm run format:check` | Biome format check (CI-safe) |
+| `npm test` | Vitest unit/security/adapter/browser suites |
+| `npm run test:types` | Positive (`valid`) + negative (`invalid`) compile-time suites |
+| `npm run test:coverage` | Vitest with enforced thresholds (lines ≥ 95, statements ≥ 95, branches ≥ 90, functions ≥ 95) |
+| `npm run build` | tsup → ESM + CJS + `.d.ts` + `.d.cts` + sourcemaps into `dist/` |
+| `npm run verify:package` | Packs the tarball, installs it into throwaway projects, runs runtime ESM/CJS smokes + the full TypeScript consumer matrix against the **packed artifact** |
+| `npm run verify:deno` | Deno smoke against the built `dist/index.js` |
+| `npx publint` | Package-lint of exports/types (must report "All good!") |
 
-> **Run `bun run check` before opening a PR.** It is exactly what CI runs, so
+> **Run `npm run check` before opening a PR.** It is exactly what CI runs, so
 > if it passes locally, the merge gate is already met.
 
 ---
@@ -125,7 +129,7 @@ flowchart TD
     E --> F[Tests: tests/NAME.test.ts]
     F --> G[Type assertions: types.test.ts + type-tests/valid.ts]
     G --> H[Wire into index.ts + optional.ts]
-    H --> I[bun run check]
+    H --> I[npm run check]
 ```
 
 1. **Create `src/parsers/<name>.ts`**, following `src/parsers/string.ts` as the
@@ -144,7 +148,7 @@ flowchart TD
    `type-tests/valid.ts`.
 4. **Wire the maker** into `src/index.ts` (named export + `env` namespace
    import) and `src/optional.ts` if an optional variant makes sense.
-5. **Run `bun run check`.**
+5. **Run `npm run check`.**
 
 ---
 
@@ -166,7 +170,7 @@ behavior belongs in `tests/adapters.test.ts`.
 
 ## Verify the package surface
 
-`bun run verify:package` is the release gate. It asserts that:
+`npm run verify:package` is the release gate. It asserts that:
 
 - the tarball contains exactly `dist/**`, `README.md`, `LICENSE`, `package.json`
   (no `src/`, `tests/`, `examples/`, scripts, configs, or lockfiles);
@@ -186,9 +190,8 @@ export surface.
 - **Zero runtime dependencies is a hard contract.** Do not add one without
   seriously questioning whether it earns a place on the tree-shaken critical
   path.
-- Every change to `devDependencies` updates **both** `bun.lock` and
-  `package-lock.json`, and both `bun install --frozen-lockfile` and `npm ci`
-  must pass in CI.
+- `devDependencies` are managed with npm; `package-lock.json` is the source of
+  truth and `npm ci` must pass in CI.
 
 ---
 
@@ -196,7 +199,7 @@ export surface.
 
 A quick final pass:
 
-- [ ] `bun run check` passes — typecheck, lint, format, unit tests, type tests,
+- [ ] `npm run check` passes — typecheck, lint, format, unit tests, type tests,
       build, and the packed-package consumer matrix.
 - [ ] New public behavior ships with **regression tests** *and* **documentation**
       (README or JSDoc) in the same PR.

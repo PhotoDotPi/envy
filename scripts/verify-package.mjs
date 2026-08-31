@@ -13,7 +13,7 @@
  *      a type-less CJS package under nodenext, and legacy node10 resolution —
  *      each also importing `envy-ts/load`. Zero TS1471/TS1479/TS2307 allowed.
  *
- * Run after `bun run build` via:  bun run verify:package
+ * Run after `npm run build` via:  npm run verify:package
  */
 import { execFileSync, spawnSync } from "node:child_process";
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";

@@ -1,7 +1,7 @@
 /**
  * Using enums to keep stringly-typed configuration safe.
  *
- * Run with:  NODE_ENV=production bun run examples/enum.ts
+ * Run with:  NODE_ENV=production npx tsx examples/enum.ts
  */
 import { env, parseEnvOrThrow } from "../src";
 

@@ -70,15 +70,17 @@
     "test:coverage": "vitest run --coverage",
     "verify:package": "node --no-deprecation scripts/verify-package.mjs",
     "verify:deno": "deno run --allow-env scripts/verify-deno.ts",
-    "check:package": "bun run build && bun run verify:package && bunx publint",
-    "check": "bun run typecheck && bun run lint && bun run format:check && bun run test && bun run test:types && bun run build && bun run check:package",
-    "prepublishOnly": "bun run build"
+    "check:package": "npm run build && npm run verify:package && npx publint",
+    "check": "npm run typecheck && npm run lint && npm run format:check && npm run test && npm run test:types && npm run build && npm run check:package",
+    "prepublishOnly": "npm run build"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.11",
     "@types/node": "^26.4.0",
+    "@vitest/coverage-v8": "^4.1.11",
     "publint": "^0.3.24",
     "tsup": "^8.5.1",
+    "tsx": "^4.19.0",
     "typescript": "^5.9.3",
     "vitest": "^4.1.11"
   },

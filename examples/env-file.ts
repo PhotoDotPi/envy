@@ -9,7 +9,7 @@
  *   GREETING=hello
  *   PORT=4000
  *
- * Run with:  bun run examples/env-file.ts
+ * Run with:  npx tsx examples/env-file.ts
  */
 import { env } from "../src";
 import { loadEnv } from "../src/load";

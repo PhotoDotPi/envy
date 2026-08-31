@@ -4,7 +4,7 @@
  * `env.number(...)` etc. build pure field descriptors. `env.config` parses
  * them against the process environment into one immutable, typed object.
  *
- * Run with:  bun run examples/basic.ts
+ * Run with:  npx tsx examples/basic.ts
  */
 import { env } from "../src";
 

@@ -418,9 +418,12 @@ const config = env.config({
 ## Contributing
 
 Contributions are welcome — see [CONTRIBUTING.md](./CONTRIBUTING.md) for the toolchain
-(Bun, Biome, tsup, Vitest), the "how to add a parser" guide, and the regression-test
-convention. Security policies and private reporting live in
+(Node.js + npm, Biome, tsup, Vitest), the "how to add a parser" guide, and the
+regression-test convention. Security policies and private reporting live in
 [SECURITY.md](./SECURITY.md); version history is in [CHANGELOG.md](./CHANGELOG.md).
+
+**Development** uses Node.js + npm; the **library** keeps supporting Browser, Node.js,
+Bun, and Deno as runtimes. See [Any runtime, one core](#any-runtime-one-core).
 
 **The current suite: 371 tests across 22 files** (unit, security/adversarial, adapter,
 browser-bundle, and a compile-time positive/negative type suite) — plus enforced
@@ -430,15 +433,15 @@ consumer matrix on every CI push.
 Run the examples:
 
 ```sh
-bun run examples/basic.ts
-NODE_ENV=production REGION=eu-west-1 bun run examples/enum.ts
-PORT=99999 bun run examples/validation.ts
-PORT=3001 HOST=127.0.0.1 NODE_ENV=test DATABASE_URL=https://example.com bun run examples/server.ts
+npx tsx examples/basic.ts
+NODE_ENV=production REGION=eu-west-1 npx tsx examples/enum.ts
+PORT=99999 npx tsx examples/validation.ts
+PORT=3001 HOST=127.0.0.1 NODE_ENV=test DATABASE_URL=https://example.com npx tsx examples/server.ts
 ```
 
-Release gate: `bun run check` (typecheck + lint + format + unit tests + type tests +
-build + packed-package verification) plus `bun run test:coverage` and
-`bun run verify:deno`.
+Release gate: `npm run check` (typecheck + lint + format + unit tests + type tests +
+build + packed-package verification) plus `npm run test:coverage` and
+`npm run verify:deno`.
 
 ---
 

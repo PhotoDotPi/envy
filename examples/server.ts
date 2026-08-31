@@ -3,7 +3,7 @@
  *
  * Requires a DATABASE_URL to be set and throws a clear error if it is not.
  *
- * Run with:  PORT=8080 NODE_ENV=production DATABASE_URL=postgres://... bun run examples/server.ts
+ * Run with:  PORT=8080 NODE_ENV=production DATABASE_URL=postgres://... npx tsx examples/server.ts
  */
 import { createServer } from "node:http";
 import { env } from "../src";

@@ -7,15 +7,18 @@
  *   `@ts-expect-error` makes tsc fail.
  */
 import { execFileSync } from "node:child_process";
+import { createRequire } from "node:module";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-// Use Bunx to run TypeScript directly
-const tscCmd = "bunx";
+// Resolve the locally installed TypeScript compiler and run it with the Node
+// runtime — no npx/shell indirection needed.
+const require2 = createRequire(import.meta.url);
+const tscJs = require2.resolve("typescript/bin/tsc");
 
 function run(name, project) {
   try {
-    execFileSync(tscCmd, ["tsc", "-p", project, "--noEmit"], { stdio: "inherit" });
+    execFileSync(process.execPath, [tscJs, "-p", project, "--noEmit"], { stdio: "inherit" });
     console.log(`PASS: ${name} type test compiled as expected.`);
     return true;
   } catch {
